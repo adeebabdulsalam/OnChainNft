@@ -36,9 +36,33 @@ contract OnChainNft is ERC721Enumerable, Ownable {
     _safeMint(msg.sender, supply + 1);
   }
 
-  function buildImage() public pure returns(string memory){
+  function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+        if (_i == 0) {
+            return "0";
+        }
+        uint j = _i;
+        uint len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint k = len;
+        while (_i != 0) {
+            k = k-1;
+            uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
+    }
+
+  function buildImage(uint256 _tokenId) public pure returns(string memory){
       return Base64.encode(bytes(string(abi.encodePacked(
-       '<svg height="30" width="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><text x="0" y="15" fill="red">Hello World</text></svg>'
+       '<svg height="30" width="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><text x="0" y="15" fill="red">',
+       uint2str(_tokenId),
+       '</text></svg>'
       ))));
 
   }
@@ -55,7 +79,7 @@ contract OnChainNft is ERC721Enumerable, Ownable {
       "ERC721Metadata: URI query for nonexistent token"
     );
     
-    string memory _uri = buildImage();
+    string memory _uri = buildImage(tokenId);
     return string(abi.encodePacked(
         'data:application/json;base64,',
         Base64.encode(bytes(abi.encodePacked(
