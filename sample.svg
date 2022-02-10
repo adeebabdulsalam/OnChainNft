@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<svg height="30" width="200" 
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <text x="0" y="15" fill="red">I love SVG!</text>
+</svg>
+ 
+</body>
+</html>
